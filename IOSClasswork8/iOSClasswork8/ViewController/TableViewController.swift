@@ -24,9 +24,11 @@ class TableViewController: UITableViewController {
 
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
-
-        //📌أعرض الـ card للمدينة مع اسمها في الخلية
+        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! MovieCell
+        
+        let city = cities[indexPath.row]
+        cell.cardImage.image = city.cardImage()
+        cell.cardLabel.text = city.name
         // Configure the cell...
         return cell
     }
@@ -39,6 +41,9 @@ class TableViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         //📌قم بالانتقال الى الواجهة التالية بعد وضع اسم الـ Segue و انقل هيكل الـCity المختار من قبل المستخدم
+        let city = cities[indexPath.row]
+        performSegue(withIdentifier: "goweatherdetails", sender: city )
+
         //📌استخدم دالةperformSegue(withIdentifier: , sender: T##Any?)
     }
     
@@ -47,6 +52,10 @@ class TableViewController: UITableViewController {
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        
+        let weatherVC = segue.destination as! weatherDetails
+        let city = sender as! City
+        weatherVC.city = city
         //📌عين الواجهة الجديدة للانتقال اليها عبر الـ Segue
         // Get the new view controller using segue.destination.
        
